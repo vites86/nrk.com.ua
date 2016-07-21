@@ -1,0 +1,13 @@
+http://www.nrk.com.ua/index.php
+http://www.nrk.com.ua/about.php
+http://www.nrk.com.ua/gallery.php
+http://www.nrk.com.ua/partners.php
+http://www.nrk.com.ua/rekvisits.php
+http://www.nrk.com.ua/news.php?id=1
+http://www.nrk.com.ua/news.php?id=2
+http://www.nrk.com.ua/news.php?id=3
+http://www.nrk.com.ua/news.php?id=4
+http://www.nrk.com.ua/news.php?id=5
+http://www.nrk.com.ua/news.php?id=6
+http://www.nrk.com.ua/news.php?id=7
+http://www.nrk.com.ua/news.php?id=8
