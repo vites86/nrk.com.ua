@@ -37,7 +37,6 @@
 
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta http-equiv="imagetoolbar" content="no" />
-  <title>FancyBox 1.3.4 | Demonstration</title>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
   <script>
     !window.jQuery && document.write('<script src="Gallery/jquery-1.4.3.min.js"><\/script>');

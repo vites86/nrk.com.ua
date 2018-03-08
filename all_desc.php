@@ -83,9 +83,9 @@ $(document).ready(function () {
                     <ul class='popular-posts'>
                       <!-- <ul class='gallery-post-grid holder'> -->
                        <?php                  
-                              $result = mysql_query("SELECT *, DATE_FORMAT(date_,'%d.%m.%Y') as eurodate FROM news_desc order by date_ desc ",$db);
-                              $myrow = mysql_fetch_array ($result);
-                              do {         
+                              $result =  mysqli_query($db, "SELECT *, DATE_FORMAT(date_,'%d.%m.%Y') as eurodate FROM news_desc order by date_ desc ");
+                              while( $myrow = mysqli_fetch_assoc($result) )
+                              {         
                                    printf (" 
                                    <li>
                                    <a href='news_desc.php?id=%s' target='_blank'><img src='%s' alt='%s'></a>
@@ -95,8 +95,8 @@ $(document).ready(function () {
                                       <em style='margin-top:25px'>Дата: %s</em>
                                    </li>", $myrow['id'], $myrow['img'], $myrow['title'], $myrow['id'], $myrow['title'], $myrow['id'], $myrow['description'], 
                                           $myrow['author'], $myrow['eurodate'] );      
-                                  }
-                              while ($myrow = mysql_fetch_array($result));
+                              }
+                              mysqli_free_result($result); 
                         ?> 
                       </ul>
                    </div>

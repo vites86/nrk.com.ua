@@ -38,14 +38,14 @@
                     <h5>Останні новини</h5>
                        <ul class="post-list">
                                    <?php                  
-                                    $result = mysql_query("SELECT * FROM news order by date_ desc LIMIT 5",$db);
-                                    $myrow = mysql_fetch_array ($result);
-                                    do {         
+                                    $result = mysqli_query($db,"SELECT * FROM news order by date_ desc LIMIT 5");
+                                    while( $myrow = mysqli_fetch_assoc($result) )
+		                            {         
                                     printf (" 
                                              <li><a href='news.php?id=%s'>%s</a></li>
                                             ", $myrow['id'], $myrow['title'] );      
                                         }
-                                    while ($myrow = mysql_fetch_array($result));
+                                    mysqli_free_result($result); 
                                     ?> 
                       </ul>
                 </div>

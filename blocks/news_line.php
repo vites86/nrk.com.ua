@@ -9,10 +9,10 @@
             <div class="row clearfix no-margin">
                <ul class="gallery-post-grid holder">
                 <?php                  
-                       $result = mysql_query("SELECT *, DATE_FORMAT(date_,'%d.%m.%Y') as eurodate FROM news order by date_ desc limit 4",$db);
-                       $myrow = mysql_fetch_array ($result);
-                       do {         
-                       printf (" 
+                       $result = mysqli_query($db, "SELECT *, DATE_FORMAT(date_,'%d.%m.%Y') as eurodate FROM news order by date_ desc limit 4");
+                       while( $myrow = mysqli_fetch_assoc($result) )
+		               {        
+                         printf (" 
                                   <li  class='span3 gallery-item' data-id='id-%' data-type='illustration'>
                                       <span class='gallery-hover-4col hidden-phone hidden-tablet'>
                                           <span class='gallery-icons'>
@@ -25,8 +25,8 @@
                                       <span class='project-details'>%s: %s</span>
                                   </li>", $myrow['id'], $myrow['img'], $myrow['title'], $myrow['id'], $myrow['id'], $myrow['img'], $myrow['id'], 
                                   $myrow['title'], $myrow['author'], $myrow['eurodate'] );      
-                           }
-                       while ($myrow = mysql_fetch_array($result));
+                       } 
+                       mysqli_free_result($result); 
                  ?> 
                </ul>
             </div>

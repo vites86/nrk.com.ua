@@ -46,12 +46,11 @@
                <div class="span12 gallery-single">
                    <?php         
                         $id=$_GET["id"];         
-                        $result = mysql_query("SELECT *, DATE_FORMAT(date_,'%d.%m.%Y') as eurodate FROM news_desc WHERE id=$id",$db);
-                        if (!$result) { die('Неверный запрос: ' . mysql_error());}
-                        $myrow = mysql_fetch_array ($result);
+                        $result = mysqli_query($db,"SELECT *, DATE_FORMAT(date_,'%d.%m.%Y') as eurodate FROM news_desc WHERE id=$id");
                         $current_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                        do {         
-                        printf (" <div class='row'>
+                        while( $myrow = mysqli_fetch_assoc($result) )
+		               {         
+                         printf (" <div class='row'>
                                       <div class='span12'>
                                           <img src='%s' class='align-left thumbnail' alt='image'>                                    
                                           <h2>%s</h2>
@@ -67,8 +66,8 @@
                                           </ul>
                                       </div>
                                   </div>", $myrow['img'], $myrow['title'], $myrow['description'], $myrow['text_'], $myrow['eurodate'], $myrow['author'] );      
-                            }
-                        while ($myrow = mysql_fetch_array($result));
+                        }
+                        mysqli_free_result($result); 
                     ?> 
                </div>
            </div>        

@@ -63,10 +63,10 @@ $(document).ready(function () {
         <div class="span12 gallery-single">
              <?php         
                        $id=$_GET["id"];         
-                       $result = mysql_query("SELECT * FROM Articles WHERE id=$id",$db);
-                       $myrow = mysql_fetch_array ($result);
-                       do {         
-                       printf (" <div class='row'>
+                       $result = mysqli_query($db,"SELECT * FROM Articles WHERE id=$id");
+                       while( $myrow = mysqli_fetch_assoc($result) )
+		               {          
+                        printf (" <div class='row'>
                                      <div class='span12'>
                                          <img src='%s' class='align-left thumbnail' alt='image'>                                    
                                          <h2>%s</h2>
@@ -79,8 +79,8 @@ $(document).ready(function () {
                                          </ul>
                                      </div>
                                  </div>", $myrow['img'], $myrow['title'], $myrow['description'], $myrow['text_'], $myrow['date_'], $myrow['author'] );      
-                           }
-                       while ($myrow = mysql_fetch_array($result));
+                        }
+                        mysqli_free_result($result); 
                  ?> 
         </div><!-- End gallery-single-->
     </div><!-- End container row -->  

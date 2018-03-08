@@ -3,20 +3,19 @@ if (isset($_GET['news_id'])) {$news_id = $_GET['news_id'];}
 if (!isset($news_id))
 {
     echo "<br><br>";
-    $result = mysql_query("SELECT title, id, img FROM news");
-    $myrow = mysql_fetch_array($result); 
-    do 
+    $result = mysqli_query($db, "SELECT title, id, img FROM news");
+    while( $myrow = mysqli_fetch_assoc($result) )
     {
-         printf ("<p><img src='../$myrow[img]' style='height:50px;' />
-                  <a href='index.php?id=7&news_id=%s'>%s</a></p><br>",$myrow["id"],$myrow["title"]);
-    }
-    while ($myrow = mysql_fetch_array($result));
+       printf ("<p><img src='../$myrow[img]' style='height:50px;' />
+       <a href='index.php?id=7&news_id=%s'>%s</a></p><br>",$myrow["id"],$myrow["title"]);
+    } 
+    mysqli_free_result($result); 
     echo "<br><br><br><br><br><br><br><br>";
 }
 else
 {
      
-     $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua". "/img/news/$news_id/";
+     $news_directory = $_SERVER['DOCUMENT_ROOT'] . "/img/news/$news_id/";
      $files = scandir($news_directory); // Берём всё содержимое директории 
      if (count($files) == 2) {echo "<h1>Фотографії покищо не завантажені в дану новину</h1>";}
      print <<<HERE

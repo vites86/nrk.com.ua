@@ -3,21 +3,21 @@ if (isset($_GET['article_id'])) {$article_id = $_GET['article_id'];}
 if (!isset($article_id))
 {
 echo "<br><br>";
-$result = mysql_query("SELECT title, id, img FROM news_desc order by id desc");
-$myrow = mysql_fetch_array($result); 
-do 
+$result = mysqli_query($db, "SELECT title, id, img FROM news_desc order by id desc");
+while( $myrow = mysqli_fetch_assoc($result) )
 {
 printf ("<p><img src='../$myrow[img]' style='height:50px;' />
          <a href='index.php?id=12&article_id=%s'>%s</a></p><br>",$myrow["id"],$myrow["title"]);
 }
-while ($myrow = mysql_fetch_array($result));
+mysqli_free_result($result); 
+
 echo "<br><br><br><br><br><br><br><br>";
 }
 else
 {
-$result = mysql_query("SELECT * FROM news_desc WHERE id = $article_id order by id desc");
-$myrow = mysql_fetch_array($result); 
-$img_src = $_SERVER['DOCUMENT_ROOT'] . "/nrk.com.ua/" . $myrow['img'];
+$result = mysqli_query($db, "SELECT * FROM news_desc WHERE id = $article_id order by id desc");
+$myrow = mysqli_fetch_assoc($result); 
+$img_src = $_SERVER['DOCUMENT_ROOT'] . "/" . $myrow['img'];
 $title = str_replace("\"", "''", $myrow['title']);
 $text = str_replace("\"", "''", $myrow['text_']);
 $description = str_replace("\"", "''", $myrow['description']);

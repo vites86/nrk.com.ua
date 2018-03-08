@@ -115,7 +115,7 @@
               </li>
             </ul>
           </li>
-          <li class="">
+          <!-- <li class="">
             <a href="javascript:;">
               <i class="fa fa-pencil"></i>
               <span class="link-title">Друзі</span> 
@@ -164,7 +164,7 @@
               <i class="fa fa-file"></i>
               <span class="link-title">Test Page</span> 
             </a> 
-          </li>
+          </li> -->
           <li>
             <a href="php_version.php">
               <i class="fa fa-file"></i>

@@ -31,14 +31,13 @@ if (!isset($id)) { $id = 1; }
           <div class="inner bg-light lter">
             <div class="col-lg-12">
                        <?php                         
-                        $result = mysql_query("SELECT * FROM pages WHERE id=$id",$db);
-                        if (!$result) { die('Неверный запрос: ' . mysql_error());}
-                        $myrow = mysql_fetch_array ($result); 
-                        do {  
+                        $result = mysqli_query($db, "SELECT * FROM pages WHERE id=$id");
+                        while( $myrow = mysqli_fetch_assoc($result) )
+		                    {  
                            printf ("<h1 style='color:green' id='bootstrap-admin-template'>%s</h1>", $myrow['name']); 
                            include ("blocks/".$myrow['src']);                          
-                         }
-                           while ($myrow = mysql_fetch_array($result));
+                        } 
+                        mysqli_free_result($result); 
                         ?>   <br><br>
             </div>
           </div><!-- /.inner -->

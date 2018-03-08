@@ -116,12 +116,12 @@ switch ($handler) {
             {
                     $ext = pathinfo($_FILES['myfile']['name'], PATHINFO_EXTENSION);
                     $fileName = $id.".".$ext; 
-                    $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua". "/img/news/$id/";
+                    $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/". "/img/news/$id/";
                     $path_to_file_tmp = $news_directory . $fileName;
                     if (file_exists($path_to_file_tmp)) unlink($path_to_file_tmp);
                     move_uploaded_file($_FILES["myfile"]['tmp_name'], $path_to_file_tmp);                  
-                    $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua"."/img/news/" . $fileName; 
-                    $path_to_oldNewsIcon = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua/".$img_src;
+                    $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/"."/img/news/" . $fileName; 
+                    $path_to_oldNewsIcon = $_SERVER['DOCUMENT_ROOT'] ."/".$img_src;
                     $img_src = "img/news/".$fileName;
                     if (file_exists($path_to_newsIcon)) unlink($path_to_newsIcon); 
                     if (file_exists($path_to_oldNewsIcon)) unlink($path_to_oldNewsIcon); 
@@ -153,7 +153,7 @@ switch ($handler) {
         if (isset($_POST['id'])) { $id = $_POST['id']; if($id ==''){unset($id);}}
         if (isset($_POST['id']))
         { 
-            $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua". "/img/news/$id/";
+            $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/". "/img/news/$id/";
             if( $_FILES["myfile1"]['size'] > 0)
             {
                 $path_to_file = $news_directory . $_FILES["myfile1"]['name'];
@@ -225,12 +225,12 @@ switch ($handler) {
                 // echo "$news_count, $title, $meta_d, $meta_k, $descr, $author, $text";exit;        
                 $ext = pathinfo($_FILES['myfile']['name'], PATHINFO_EXTENSION);
                 $fileName = $news_count.".".$ext;                 
-                $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua". "/img/articles/$news_count/";
+                $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/". "/img/articles/$news_count/";
                 if (!is_dir($news_directory)) mkdir($news_directory,0777);           
                 $path_to_file_tmp = $news_directory . $fileName;
                 if (file_exists($path_to_file_tmp)) unlink($path_to_file_tmp);
                 move_uploaded_file($_FILES["myfile"]['tmp_name'], $path_to_file_tmp);                  
-                $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua"."/img/articles/" . $fileName;  
+                $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/"."/img/articles/" . $fileName;  
                 move_uploaded_file($_FILES["myfile"]['tmp_name'], $path_to_newsIcon);                 
                 Adminka::imgResize($path_to_file_tmp, $path_to_newsIcon, 370, 300, $ext);              
                 
@@ -271,12 +271,12 @@ switch ($handler) {
             {
                     $ext = pathinfo($_FILES['myfile']['name'], PATHINFO_EXTENSION);
                     $fileName = $id.".".$ext; 
-                    $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua". "/img/articles/$id/";
+                    $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/". "/img/articles/$id/";
                     $path_to_file_tmp = $news_directory . $fileName;
                     if (file_exists($path_to_file_tmp)) unlink($path_to_file_tmp);
                     move_uploaded_file($_FILES["myfile"]['tmp_name'], $path_to_file_tmp);                  
-                    $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua"."/img/articles/" . $fileName; 
-                    $path_to_oldNewsIcon = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua/".$img_src;
+                    $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/"."/img/articles/" . $fileName; 
+                    $path_to_oldNewsIcon = $_SERVER['DOCUMENT_ROOT'] ."/".$img_src;
                     $img_src = "img/news/".$fileName;
                     if (file_exists($path_to_newsIcon)) unlink($path_to_newsIcon); 
                     if (file_exists($path_to_oldNewsIcon)) unlink($path_to_oldNewsIcon); 
@@ -344,12 +344,12 @@ switch ($handler) {
                    // echo "$news_count, $title, $meta_d, $meta_k, $descr, $author, $text";exit;        
                    $ext = pathinfo($_FILES['myfile']['name'], PATHINFO_EXTENSION);
                    $fileName = $news_count.".".$ext;                 
-                   $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua". "/img/desc/$news_count/";
+                   $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/". "/img/desc/$news_count/";
                    if (!is_dir($news_directory)) mkdir($news_directory,0777);           
                    $path_to_file_tmp = $news_directory . $fileName;
                    if (file_exists($path_to_file_tmp)) unlink($path_to_file_tmp);
                    move_uploaded_file($_FILES["myfile"]['tmp_name'], $path_to_file_tmp);                  
-                   $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua"."/img/desc/" . $fileName;  
+                   $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/"."/img/desc/" . $fileName;  
                    move_uploaded_file($_FILES["myfile"]['tmp_name'], $path_to_newsIcon);                 
                    Adminka::imgResize($path_to_file_tmp, $path_to_newsIcon, 370, 300, $ext);              
                    
@@ -390,12 +390,12 @@ switch ($handler) {
                    {
                            $ext = pathinfo($_FILES['myfile']['name'], PATHINFO_EXTENSION);
                            $fileName = $id.".".$ext; 
-                           $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua". "/img/desc/$id/";
+                           $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/". "/img/desc/$id/";
                            $path_to_file_tmp = $news_directory . $fileName;
                            if (file_exists($path_to_file_tmp)) unlink($path_to_file_tmp);
                            move_uploaded_file($_FILES["myfile"]['tmp_name'], $path_to_file_tmp);                  
-                           $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua"."/img/desc/" . $fileName; 
-                           $path_to_oldNewsIcon = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua/".$img_src;
+                           $path_to_newsIcon = $_SERVER['DOCUMENT_ROOT'] ."/"."/img/desc/" . $fileName; 
+                           $path_to_oldNewsIcon = $_SERVER['DOCUMENT_ROOT'] ."/".$img_src;
                            $img_src = "img/desc/".$fileName;
                            if (file_exists($path_to_newsIcon)) unlink($path_to_newsIcon); 
                            if (file_exists($path_to_oldNewsIcon)) unlink($path_to_oldNewsIcon); 

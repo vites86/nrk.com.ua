@@ -3,9 +3,7 @@
 
 class Adminka 
 {	
-	var $count_animators;  
-
- 
+	var $count_animators;   
 
 public function addAnimator($title, $meta_d, $meta_k, $description)
 {	
@@ -33,7 +31,7 @@ else
 
 if (isset($title) && isset($meta_d) && isset($meta_k) && isset($description))
  { 
-      $result= mysql_query ("INSERT INTO mane_page_animators_slider(id, title, meta_d, meta_k, description, img_src) VALUES ($count_animators, '$title','$meta_d','$meta_k', '$description','images/slider_content/$count_animators.png')");
+      $result= mysqli_query($db, "INSERT INTO mane_page_animators_slider(id, title, meta_d, meta_k, description, img_src) VALUES ($count_animators, '$title','$meta_d','$meta_k', '$description','images/slider_content/$count_animators.png')");
           if ($result == 'true') 
           	{
           		return "<img src='../images/slider_content/$count_animators.png' alt=''><p style='color:blue;'>    Добавлено успешно!</p>";
@@ -53,13 +51,13 @@ if (isset($title) && isset($meta_d) && isset($meta_k) && isset($description))
 
 public function getAnimatorsCount()
 {
-	  include ("blocks/php.php");
-      $result = mysql_query("SELECT MAX(id) as id FROM mane_page_animators_slider",$db);	
-      $myrow = mysql_fetch_array ($result); 
-      do { 
+	    include ("blocks/php.php");
+      $result = mysqli_query($db, "SELECT MAX(id) as id FROM mane_page_animators_slider");	
+      while( $myrow = mysqli_fetch_assoc($result) )
+		  { 
       	$count_animators= $myrow['id'];
       }
-      while($myrow = mysql_fetch_array($result));      
+      mysqli_free_result($result);      
       return $count_animators;
 }
 
@@ -68,7 +66,7 @@ public function delAnimator($id)
  include ("blocks/php.php");
  if (isset($id))
  { 
-    $result= mysql_query ("DELETE FROM mane_page_animators_slider WHERE id='$id'");
+    $result= mysqli_query($db, "DELETE FROM mane_page_animators_slider WHERE id='$id'");
     if ($result == 'true') 
     {
       $directory = $_SERVER['DOCUMENT_ROOT'] . "/images/gallery/animators/$id/";
@@ -145,7 +143,7 @@ public function addVideo()
  
           $file_path_forBD1 = 'images/gallery/video/' . $fileName;
           $file_path_forBD2 = 'images/gallery/video/' . $fileName1;
-          $result= mysql_query ("INSERT INTO video(img_src, video_src) VALUES ($file_path_forBD1, $file_path_forBD2)");
+          $result= mysqli_query($db, "INSERT INTO video(img_src, video_src) VALUES ($file_path_forBD1, $file_path_forBD2)");
           if ($result == 'true') 
             {
               return "<img style='margin:30px;' src='../images/gallery/other/$fileName' alt=''/><p style='color:blue;'>    Добавлено успешно!</p>";
@@ -162,12 +160,11 @@ public function delVideo($id,$img_src,$video_src)
  include ("blocks/php.php");
  if (isset($id) && isset($img_src) && isset($video_src))
  { 
-    $result= mysql_query ("DELETE FROM video WHERE id='$id'");
+    $result= mysqli_query($db, "DELETE FROM video WHERE id='$id'");
     if ($result == 'true') 
     {
-$file_path1 = $_SERVER['DOCUMENT_ROOT'] . "/" . $img_src;
-$file_path2 = $_SERVER['DOCUMENT_ROOT'] . "/" . $video_src;    
-    
+      $file_path1 = $_SERVER['DOCUMENT_ROOT'] . "/" . $img_src;
+      $file_path2 = $_SERVER['DOCUMENT_ROOT'] . "/" . $video_src;        
       if(file_exists($file_path1)) @unlink($file_path1);
       if(file_exists($file_path2)) @unlink($file_path2);
       return "<p style='color:blue;'>        Программа удалена!</p>";
@@ -191,7 +188,7 @@ public function addShou($title, $meta_d, $meta_k, $description, $text)
          move_uploaded_file($_FILES['shoufile']['tmp_name'], $file_path1);
          copy($file_path1, $file_path2);   
          $file_path_forBD = 'images/gallery/shou/' . $fileName;
-         $result= mysql_query ("INSERT INTO shou (id, title, meta_d, meta_k, description, img_src, text_) VALUES ($count_shou, '$title', '$meta_d', '$meta_k', '$description', '$file_path_forBD', '$text')");
+         $result= mysqli_query($db, "INSERT INTO shou (id, title, meta_d, meta_k, description, img_src, text_) VALUES ($count_shou, '$title', '$meta_d', '$meta_k', '$description', '$file_path_forBD', '$text')");
           if ($result == 'true') 
             {
               return "<img style='margin:30px;' src='../images/gallery/shou/$fileName' alt=''/><p style='color:blue;'>    Добавлено успешно!</p>";
@@ -212,7 +209,7 @@ public function updateShou($id, $title, $meta_d, $meta_k, $description, $text)
 { 
     if ($_FILES['newshoufile']['size'] == 0)
     { 
-        $result= mysql_query ("UPDATE  shou SET title='$title', meta_d='$meta_d', meta_k='$meta_k', description='$description', text_='$text' WHERE id='$id' ");
+        $result= mysqli_query($db, "UPDATE  shou SET title='$title', meta_d='$meta_d', meta_k='$meta_k', description='$description', text_='$text' WHERE id='$id' ");
         if ($result == 'true') {return "<p style='color:blue;'>        Программа успешно изменена!</p>";}
         else {return "<p style='color:red;'>       Программа не изменена!</p>";}
     }
@@ -223,7 +220,7 @@ public function updateShou($id, $title, $meta_d, $meta_k, $description, $text)
       $file_path_forBD = 'images/gallery/shou/$id.png';
       move_uploaded_file($_FILES['newshoufile']['tmp_name'], $file_path_forDelete);   
      
-      $result= mysql_query ("UPDATE  shou SET title='$title', meta_d='$meta_d', meta_k='$meta_k', description='$description', text_='$text' WHERE id='$id' ");
+      $result= mysqli_query($db, "UPDATE  shou SET title='$title', meta_d='$meta_d', meta_k='$meta_k', description='$description', text_='$text' WHERE id='$id' ");
         if ($result == 'true') {return "<img style='margin:30px;' src='../images/gallery/shou/$id.png' alt='../images/gallery/shou/$id.png'/><p style='color:blue;'>        Программа успешно изменена!</p>";}
         else {return "<p style='color:red;'>       Программа не изменена!</p>";}
     }     
@@ -235,7 +232,7 @@ public function delShou($id)
  include ("blocks/php.php");
  if (isset($id))
  { 
-    $result= mysql_query ("DELETE FROM shou WHERE id='$id'");
+    $result= mysqli_query($db, "DELETE FROM shou WHERE id='$id'");
     if ($result == 'true') 
     {      
       $file_path = $_SERVER['DOCUMENT_ROOT'] . "/images/gallery/shou/$id.png";     
@@ -257,7 +254,7 @@ public function addService($title, $meta_d, $meta_k, $description, $text)
          $file_path = $_SERVER['DOCUMENT_ROOT'] . "/images/services/$myfile_name";    
          move_uploaded_file($_FILES['newServiceFile']['tmp_name'], $file_path);        
          $file_path_forBD = 'images/services/' . $myfile_name;
-         $result= mysql_query ("INSERT INTO services (title, meta_d, meta_k, description, img_src, text_) VALUES ('$title', '$meta_d', '$meta_k', '$description', '$file_path_forBD', '$text')");
+         $result= mysqli_query($db, "INSERT INTO services (title, meta_d, meta_k, description, img_src, text_) VALUES ('$title', '$meta_d', '$meta_k', '$description', '$file_path_forBD', '$text')");
           if ($result == 'true') 
             {
               return "<img style='margin:30px;' src='../images/services/$myfile_name' alt=''/><p style='color:blue;'>    Добавлено успешно!</p>";
@@ -278,7 +275,7 @@ public function updateService($id, $title, $meta_d, $meta_k, $description, $text
 { 
     if ($_FILES['changeServiceFoto']['size'] == 0)
     { 
-        $result= mysql_query ("UPDATE  services SET title='$title', meta_d='$meta_d', meta_k='$meta_k', description='$description', text_='$text' WHERE id='$id' ");
+        $result= mysqli_query($db, "UPDATE  services SET title='$title', meta_d='$meta_d', meta_k='$meta_k', description='$description', text_='$text' WHERE id='$id' ");
         if ($result == 'true') {return "<p style='color:blue;'>        Услуга успешно изменена!</p>";}
         else {return "<p style='color:red;'>       Услуга не изменена!</p>";}
     }
@@ -293,7 +290,7 @@ public function updateService($id, $title, $meta_d, $meta_k, $description, $text
       $file_path_forBD = 'images/services/' . $newfileName; 
       move_uploaded_file($_FILES['changeServiceFoto']['tmp_name'], $newfileName);            
      
-      $result= mysql_query ("UPDATE services SET title='$title', meta_d='$meta_d', meta_k='$meta_k', description='$description', text_='$text', img_src='$file_path_forBD' WHERE id='$id' ");
+      $result= mysqli_query($db, "UPDATE services SET title='$title', meta_d='$meta_d', meta_k='$meta_k', description='$description', text_='$text', img_src='$file_path_forBD' WHERE id='$id' ");
         if ($result == 'true') {return "<img style='margin:30px;' src='../$file_path_forBD' alt='../$file_path_forBD'/><p style='color:blue;'>        Услуга успешно изменена!</p>";}
         else {return "<p style='color:red;'>       Услуга не изменена!</p>";}
     }  
@@ -304,7 +301,7 @@ public function delService($id, $img_src)
  include ("blocks/php.php");
  if (isset($id) && isset($img_src))
  { 
-    $result= mysql_query ("DELETE FROM services WHERE id='$id'");
+    $result= mysqli_query($db, "DELETE FROM services WHERE id='$id'");
     if ($result == 'true') 
     {     
       $fileToDel = $_SERVER['DOCUMENT_ROOT'] . "/" . $img_src;  
@@ -322,12 +319,12 @@ public function delService($id, $img_src)
 public function getHeaderSliderPicturCount()
 {
     include ("blocks/php.php");
-      $result = mysql_query("SELECT MAX(id) as id FROM mane_page_header_slider",$db);  
-      $myrow = mysql_fetch_array ($result); 
-      do { 
+      $result = mysqli_query($db, "SELECT MAX(id) as id FROM mane_page_header_slider");  
+      while( $myrow = mysqli_fetch_assoc($result) )
+      { 
         $count_shou= $myrow['id'];
       }
-      while($myrow = mysql_fetch_array($result));      
+      mysqli_free_result($result);      
       return $count_shou;
 }
 
@@ -339,7 +336,7 @@ public function addHeaderSliderPicture()
          $file_path = $_SERVER['DOCUMENT_ROOT'] . "/images/slider_header/" . $id . ".png";    
          move_uploaded_file($_FILES['new_headerSliderPicture']['tmp_name'], $file_path);        
          $file_path_forBD = 'images/slider_header/' . $id . ".png";
-         $result= mysql_query ("INSERT INTO mane_page_header_slider (id, img_src) VALUES ($id, '$file_path_forBD')");
+         $result= mysqli_query($db, "INSERT INTO mane_page_header_slider (id, img_src) VALUES ($id, '$file_path_forBD')");
           if ($result == 'true') 
             {              
               return "<img style='margin:30px; height:100px;' src='../images/slider_header/$myfile_name' alt=''/><p style='color:blue;'>    Добавлено успешно!</p>";
@@ -364,7 +361,7 @@ public function addHeaderSliderPicture()
       $n = count($check_list);
       foreach ($_POST['check_sliderHeader'] as $selected) 
       {
-        $result= mysql_query ("DELETE FROM mane_page_header_slider WHERE id='$selected'");
+        $result= mysqli_query($db, "DELETE FROM mane_page_header_slider WHERE id='$selected'");
         if ($result == 'true') 
         { 
            $fileToDel = $_SERVER['DOCUMENT_ROOT'] . "/images/slider_header/" . $selected . ".png";  
@@ -419,7 +416,7 @@ public function updateFotoDescribe()
 
 public function updateTexts($id, $text)
 {            
-          $result= mysql_query ("UPDATE texts set  text_='$text' where id='$id'");
+          $result= mysqli_query($db, "UPDATE texts set  text_='$text' where id='$id'");
           if ($result == 'true') 
             {              
               return "<p style='color:blue;'>    Добавлено успешно!</p>";
@@ -433,7 +430,7 @@ public function updateTexts($id, $text)
 
 public function updateTelephones($id, $value)
 {            
-          $result= mysql_query ("UPDATE contacts set value='$value' where id='$id'");
+          $result= mysqli_query($db, "UPDATE contacts set value='$value' where id='$id'");
           if ($result == 'true') 
             {              
               return "<p style='color:blue;'>    Изменено успешно!</p>";
@@ -446,7 +443,7 @@ public function updateTelephones($id, $value)
 
 public function updateKassy($id, $adress, $value)
 {            
-          $result= mysql_query ("UPDATE contacts set value='$value', cat_name='$adress' where id='$id'");
+          $result= mysqli_query($db, "UPDATE contacts set value='$value', cat_name='$adress' where id='$id'");
           if ($result == 'true') 
             {              
               return "<p style='color:blue;'>    Изменено успешно!</p>";
@@ -459,14 +456,14 @@ public function updateKassy($id, $adress, $value)
 
 public function updateOtherPrices($id, $price_true, $price_false)
 {     
-        $result= mysql_query ("UPDATE prices_other SET price_true='$price_true', price_false='$price_false' WHERE id='$id' ");
+        $result= mysqli_query($db, "UPDATE prices_other SET price_true='$price_true', price_false='$price_false' WHERE id='$id' ");
         if ($result == 'true') {return "<p style='color:blue;'>        Цена успешно изменена!</p>";}
         else {return "<p style='color:red;'>       Цена не изменена!</p>";}       
 }
 
 public function updateAnimatorsPrices($id, $price_true_1animator, $price_false_1animator,$price_true_2animator, $price_false_2animator)
 {     
-        $result= mysql_query ("UPDATE prices_animators SET 
+        $result= mysqli_query($db, "UPDATE prices_animators SET 
           price_true_1animator='$price_true_1animator', 
           price_false_1animator='$price_false_1animator',
           price_true_2animator='$price_true_2animator',
@@ -482,7 +479,7 @@ public function addPrice($name, $cat_descr, $time, $description, $price_true, $p
 {      
 
    try {       
-          $result= mysql_query ("INSERT INTO prices_other (name,cat_descr,time,description,price_true,price_false) 
+          $result= mysqli_query($db, "INSERT INTO prices_other (name,cat_descr,time,description,price_true,price_false) 
             VALUES ('$name', '$cat_descr', '$time', '$description', '$price_true', '$price_false')");
           if ($result == 'true') 
             {              
@@ -504,7 +501,7 @@ public function delPrice($cat_descr, $name)
 {
  include ("blocks/php.php");
  try { 
-    $result= mysql_query ("DELETE FROM prices_other WHERE cat_descr like '$cat_descr' and id>8");
+    $result= mysqli_query($db, "DELETE FROM prices_other WHERE cat_descr like '$cat_descr' and id>8");
     if ($result == 'true') 
     {     
       return "<p style='color:blue;'>        Программа удалена из прайса!</p>";
@@ -521,33 +518,34 @@ public function delPrice($cat_descr, $name)
           public function getPageTitle($id)
           {       
               include ("php.php");
-              $result = mysql_query("SELECT * FROM pages WHERE id=$id",$db);
-              if (!$result) { die('Неверный запрос: ' . mysql_error());}
-              $myrow = mysql_fetch_array ($result); 
-              do { $pageTitle = $myrow['title']; }
-              while ($myrow = mysql_fetch_array($result));
+              $result = mysqli_query($db, "SELECT * FROM pages WHERE id=$id");
+              if (!$result) { die('Неверный запрос: ' . mysqli_error());}
+              while( $myrow = mysqli_fetch_assoc($result) )
+              { $pageTitle = $myrow['title']; }
+              mysqli_free_result($result);
               return $pageTitle;
           }
 
           public function pageSrc($id)
           {
                 include ("blocks/php.php");
-                $result = mysql_query("SELECT src as src FROM pages where id like '$id'",$db);  
-                // if (!$result) {die('Ошибка выполнения запроса:' . mysql_error());}
-                $myrow = mysql_fetch_array ($result); 
-                do { $id= $myrow['id'];}
-                while($myrow = mysql_fetch_array($result));      
+                $result = mysqli_query($db, "SELECT src as src FROM pages where id like '$id'");  
+                // if (!$result) {die('Ошибка выполнения запроса:' . mysqli_error());}
+                while( $myrow = mysqli_fetch_assoc($result) )
+                { $id= $myrow['id'];}
+                mysqli_free_result($result);      
                 return $count_shou;
           }
+
           public function addNews($news_count, $title, $meta_d, $meta_k, $description, $author, $text, $ext)
           {      
                 include ("blocks/php.php");   
                 $query = "INSERT INTO news(id, title, meta_d, meta_k, description, author, img, text_, date_ ) 
                   VALUES ($news_count, '$title','$meta_d','$meta_k', '$description', '$author', 'img/news/$news_count.$ext', '$text', NOW())";
                 //return "addNews() - ".$query;                 
-                $result= mysql_query ($query);
+                $result= mysqli_query($db, $query);
                 if (!$result)                   
-                    return "addNews(): bad mysql_query(".mysql_error().")";
+                    return "addNews(): bad mysqli_query($db, ".mysqli_error().")";
                 else 
                     return "good";         
           }
@@ -555,12 +553,12 @@ public function delPrice($cat_descr, $name)
           public function getNewsCount()
           {
                 include ("blocks/php.php");
-                $result = mysql_query("SELECT MAX(id) as id FROM news",$db);  
-                $myrow = mysql_fetch_array ($result); 
-                do { 
+                $result = mysqli_query($db, "SELECT MAX(id) as id FROM news");  
+                while( $myrow = mysqli_fetch_assoc($result) )
+                { 
                   $count_news= $myrow['id'];
                 }
-                while($myrow = mysql_fetch_array($result));      
+                mysqli_free_result($result);      
                 return $count_news;
           }
 
@@ -570,9 +568,9 @@ public function delPrice($cat_descr, $name)
                 $query = "INSERT INTO articles(id, title, meta_d, meta_k, description, author, img, text_, date_ ) 
                   VALUES ($news_count, '$title','$meta_d','$meta_k', '$description', '$author', 'img/articles/$news_count.$ext', '$text', NOW())";
                 //return "addNews() - ".$query;                 
-                $result= mysql_query ($query);
+                $result= mysqli_query($db, $query);
                 if (!$result)                   
-                    return "addNews(): bad mysql_query(".mysql_error().")";
+                    return "addNews(): bad mysqli_query($db, ".mysqli_error().")";
                 else 
                     return "good";         
           }
@@ -583,33 +581,33 @@ public function delPrice($cat_descr, $name)
                 $query = "INSERT INTO news_desc(id, title, meta_d, meta_k, description, author, img, text_, date_ ) 
                   VALUES ($news_count, '$title','$meta_d','$meta_k', '$description', '$author', 'img/desc/$news_count.$ext', '$text', NOW())";
                 //return "addNews() - ".$query;                 
-                $result= mysql_query ($query);
+                $result= mysqli_query($db, $query);
                 if (!$result)                   
-                    return "addDesc(): bad mysql_query(".mysql_error().")";
+                    return "addDesc(): bad mysqli_query($db, ".mysqli_error().")";
                 else 
                     return "good";         
           }
           public function getArticlesCount()
           {
                 include ("blocks/php.php");
-                $result = mysql_query("SELECT MAX(id) as id FROM articles",$db);  
-                $myrow = mysql_fetch_array ($result); 
-                do { 
+                $result = mysqli_query($db, "SELECT MAX(id) as id FROM articles");  
+                while( $myrow = mysqli_fetch_assoc($result) )
+                { 
                   $count_news= $myrow['id'];
                 }
-                while($myrow = mysql_fetch_array($result));      
+                mysqli_free_result($result);      
                 return $count_news;
           }
 
           public function getDescCount()
           {
                 include ("blocks/php.php");
-                $result = mysql_query("SELECT MAX(id) as id FROM news_desc",$db);  
-                $myrow = mysql_fetch_array ($result); 
-                do { 
+                $result = mysqli_query($db, "SELECT MAX(id) as id FROM news_desc");  
+                while( $myrow = mysqli_fetch_assoc($result) )
+                { 
                   $count_news= $myrow['id'];
                 }
-                while($myrow = mysql_fetch_array($result));      
+                mysqli_free_result($result);      
                 return $count_news;
           }
 
@@ -647,11 +645,11 @@ public function delPrice($cat_descr, $name)
            include ("blocks/php.php");
            if (isset($id) && isset($img_src))
            { 
-              $result= mysql_query ("DELETE FROM news WHERE id='$id'");
+              $result= mysqli_query($db, "DELETE FROM news WHERE id='$id'");
               if ($result == 'true') 
               {
-                 $file_newsIcon = $_SERVER['DOCUMENT_ROOT'] . "/nrk.com.ua/" . $img_src;
-                 $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua/img/news/$id/";
+                 $file_newsIcon = $_SERVER['DOCUMENT_ROOT'] . "/" . $img_src;
+                 $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/img/news/$id/";
                  Adminka::fullRemove_ff($news_directory, 1);
                  if(file_exists($file_newsIcon)) @unlink($file_newsIcon);                
                  return "good";
@@ -708,13 +706,13 @@ public function updateNews($id, $title, $meta_d, $meta_k, $description, $author,
         $text = str_replace("``", "\"", $text);
         $description = str_replace("``", "\"", $description);
         $title = str_replace("``", "\"", $title);
-        $result= mysql_query ("UPDATE news SET `title`='$title', `meta_d`='$meta_d', `meta_k`='$meta_k', `description`='$description',
+        $result= mysqli_query($db, "UPDATE news SET `title`='$title', `meta_d`='$meta_d', `meta_k`='$meta_k', `description`='$description',
           `author` = '$author', `date_`='$date', `text_`='$text', `img`='$img_src' WHERE id='$id' ");
         if ($result) {
             return "good";
         }
         else{
-            return "updateNews(): bad mysql_query(".mysql_error().")";;
+            return "updateNews(): bad mysqli_query($db, ".mysqli_error().")";;
         }
     }   
     else
@@ -754,13 +752,13 @@ public function updateArticle($id, $title, $meta_d, $meta_k, $description, $auth
         $text = str_replace("``", "\"", $text);
         $description = str_replace("``", "\"", $description);
         $title = str_replace("``", "\"", $title);
-        $result= mysql_query ("UPDATE articles SET `title`='$title', `meta_d`='$meta_d', `meta_k`='$meta_k', `description`='$description',
+        $result= mysqli_query($db, "UPDATE articles SET `title`='$title', `meta_d`='$meta_d', `meta_k`='$meta_k', `description`='$description',
           `author` = '$author', `date_`='$date', `text_`='$text', `img`='$img_src' WHERE id='$id' ");
         if ($result) {
             return "good";
         }
         else{
-            return "updateArticles(): bad mysql_query(".mysql_error().")";;
+            return "updateArticles(): bad mysqli_query($db, ".mysqli_error().")";;
         }
     }   
     else
@@ -780,13 +778,13 @@ public function updateDesc($id, $title, $meta_d, $meta_k, $description, $author,
         $text = str_replace("``", "\"", $text);
         $description = str_replace("``", "\"", $description);
         $title = str_replace("``", "\"", $title);
-        $result= mysql_query ("UPDATE news_desc SET `title`='$title', `meta_d`='$meta_d', `meta_k`='$meta_k', `description`='$description',
+        $result= mysqli_query($db, "UPDATE news_desc SET `title`='$title', `meta_d`='$meta_d', `meta_k`='$meta_k', `description`='$description',
           `author` = '$author', `date_`='$date', `text_`='$text', `img`='$img_src' WHERE id='$id' ");
         if ($result) {
             return "good";
         }
         else{
-            return "updateDesc(): bad mysql_query(".mysql_error().")";;
+            return "updateDesc(): bad mysqli_query($db, ".mysqli_error().")";;
         }
     }   
     else
@@ -800,11 +798,11 @@ public function delDesc($id,$img_src)
  include ("blocks/php.php");
  if (isset($id) && isset($img_src))
  { 
-  $result= mysql_query ("DELETE FROM news_desc WHERE id='$id'");
+  $result= mysqli_query($db, "DELETE FROM news_desc WHERE id='$id'");
   if ($result == 'true') 
   {
-   $file_newsIcon = $_SERVER['DOCUMENT_ROOT'] . "/nrk.com.ua/" . $img_src;
-   $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua/img/desc/$id/";
+   $file_newsIcon = $_SERVER['DOCUMENT_ROOT'] .  $img_src;
+   $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/img/desc/$id/";
    Adminka::fullRemove_ff($news_directory, 1);
    if(file_exists($file_newsIcon)) @unlink($file_newsIcon);                
    return "good";
@@ -828,11 +826,11 @@ public function delArticle($id,$img_src)
  include ("blocks/php.php");
  if (isset($id) && isset($img_src))
  { 
-  $result= mysql_query ("DELETE FROM articles WHERE id='$id'");
+  $result= mysqli_query($db, "DELETE FROM articles WHERE id='$id'");
   if ($result == 'true') 
   {
-   $file_newsIcon = $_SERVER['DOCUMENT_ROOT'] . "/nrk.com.ua/" . $img_src;
-   $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/nrk.com.ua/img/articles/$id/";
+   $file_newsIcon = $_SERVER['DOCUMENT_ROOT'] . "/" . $img_src;
+   $news_directory = $_SERVER['DOCUMENT_ROOT'] ."/img/articles/$id/";
    Adminka::fullRemove_ff($news_directory, 1);
    if(file_exists($file_newsIcon)) @unlink($file_newsIcon);                
    return "good";
@@ -874,7 +872,7 @@ public function postInSocNetworks($news_count)
 public function putDataInBuffer($data,$category)
 {
         include ("php.php");
-        $result= mysql_query ("UPDATE buffer SET value='$data' WHERE description like '$category' ");
+        $result= mysqli_query($db, "UPDATE buffer SET value='$data' WHERE description like '$category' ");
         if ($result == 'true') {return "good";}
         else {return "bad";}   
    
@@ -883,10 +881,10 @@ public function putDataInBuffer($data,$category)
 public function getDataFromBuffer($category)
 {
     include ("php.php");
-    $result = mysql_query("SELECT value as value FROM buffer WHERE description like '$category'",$db);  
-    $myrow = mysql_fetch_array ($result); 
-    do { $news_id = $myrow['value']; }
-    while( $myrow = mysql_fetch_array($result) );      
+    $result = mysqli_query($db, "SELECT value as value FROM buffer WHERE description like '$category'");  
+    while( $myrow = mysqli_fetch_assoc($result) )
+    { $news_id = $myrow['value']; }
+    mysqli_free_result($result);     
     return $news_id;
 }
 
@@ -952,10 +950,10 @@ public function postInTwitter()
 public function getNewsInfo($id)
           {       
               include ("php.php");
-              $result = mysql_query("SELECT * FROM news WHERE id=$id",$db);
-              if (!$result) { die('Невірний запит: ' . mysql_error());}
-              $myrow = mysql_fetch_array ($result); 
-              do { 
+              $result = mysqli_query($db, "SELECT * FROM news WHERE id=$id");
+              if (!$result) { die('Невірний запит: ' . mysqli_error());}
+              while( $myrow = mysqli_fetch_assoc($result) )
+              { 
                     $news_param = array(  
                       'news_count' => $id,
                       'title' => $myrow['title'],
@@ -964,7 +962,7 @@ public function getNewsInfo($id)
                       'img' => $myrow['img']
                         );              
               }
-              while ($myrow = mysql_fetch_array($result));
+              mysqli_free_result($result);
               return $news_param;
               exit;
           }
@@ -973,14 +971,14 @@ public function getNewsInfo($id)
 public function updateNewsFbId($news_id, $fb_id)
 { 
    include ("php.php");
-   $result= mysql_query ("UPDATE news SET `fb_id`='$fb_id' WHERE id='$news_id' ");
+   $result= mysqli_query($db, "UPDATE news SET `fb_id`='$fb_id' WHERE id='$news_id' ");
         if ($result) 
         {
             return "good";
         }
         else
         {
-            return "updateNews(): bad mysql_query(".mysql_error().")";;
+            return "updateNews(): bad mysqli_query($db, ".mysqli_error().")";;
         }
 }      
 
@@ -990,22 +988,15 @@ public function  getUserAccessToken()
   session_start();
   $login = $_SESSION["login"];
   $login = "vites";
-  $result= mysql_query ("SELECT a.value as access_token FROM access_tokens as a 
+  $result= mysqli_query($db, "SELECT a.value as access_token FROM access_tokens as a 
                          LEFT OUTER JOIN userlist as b 
                          ON a.user_id = b.id WHERE b.login like '$login'");
-  $myrow = mysql_fetch_array ($result); 
-  $access_token =  $myrow['access_token']; 
+  while( $myrow = mysqli_fetch_assoc($result) )
+  {$access_token =  $myrow['access_token']; }
+  mysqli_free_result($result);
   return $access_token;
   exit;
 }
-
-
-
-
-
-
-
-
 }
 
 ?>

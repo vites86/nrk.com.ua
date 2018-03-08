@@ -37,10 +37,10 @@
                 <ul class="gallery-post-grid holder">
                 
                     <?php                  
-                       $result = mysql_query("SELECT *, DATE_FORMAT(date_,'%d.%m.%Y') as eurodate FROM news order by date_ desc",$db);
-                       $myrow = mysql_fetch_array ($result);
-                       do {         
-                       printf (" 
+                       $result = mysqli_query($db,"SELECT *, DATE_FORMAT(date_,'%d.%m.%Y') as eurodate FROM news order by date_ desc");
+                       while( $myrow = mysqli_fetch_assoc($result) )
+		               {          
+                         printf (" 
                                   <li  class='span3 gallery-item' data-id='id-%' data-type='illustration'>
                                       <span class='gallery-hover-4col hidden-phone hidden-tablet'>
                                           <span class='gallery-icons'>
@@ -53,8 +53,8 @@
                                       <span class='project-details'>%s: </a>%s</span>
                                   </li>", $myrow['id'], $myrow['img'], $myrow['title'], $myrow['id'], $myrow['id'], $myrow['img'], $myrow['id'], 
                                   $myrow['title'], $myrow['author'], $myrow['eurodate'] );      
-                           }
-                       while ($myrow = mysql_fetch_array($result));
+                       }
+                       mysqli_free_result($result);
                  ?> 
                     <!-- Gallery Item 12 -->
                    <!--  <li class="span3 gallery-item" data-id="id-12" data-type="illustration video">
